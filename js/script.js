@@ -19,3 +19,13 @@ personalMovieDB.movies[a] = b;
 personalMovieDB.movies[c] = d;
 
 console.log(personalMovieDB);
+
+const text = "Hello world";
+
+// console.log(text.slice(6, 10));
+
+console.log(text.slice(-8, -1));
+
+const num = "12.28px";
+
+console.log(parseFloat(num));
