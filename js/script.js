@@ -2,29 +2,43 @@
 
 let numbersOfFilms; /* ---создаем перезаписываемую переменную */
 
-/* пишим функцию start */
-function start() {
-    /* ---задаем вопрос пользователю через встроенную функцию prompt */
-    numbersOfFilms = +prompt('Сколько фильмов Вы уже посмотрели?', '');
-
-    /* используем цикл while с несколькими условиями через операторы && - и, || - или */
-    while (numbersOfFilms == '' || numbersOfFilms == null || isNaN(numbersOfFilms)) {
-        numbersOfFilms = +prompt('Сколько фильмов Вы уже посмотрели?', '');
-    }
-}
-
-start(); /* ---вызываем фунцию start */
-
 /* создаем объект */
 const personalMovieDB = {
-    count: numbersOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres: [],
     privat: false,
+    /* пишим функцию start, позже переписываем в метод */
+    start: function() {
+        /* ---задаем вопрос пользователю через встроенную функцию prompt */
+        personalMovieDB.count = +prompt('Сколько фильмов Вы уже посмотрели?', '');
+    
+        /* используем цикл while с несколькими условиями через операторы && - и, || - или */
+        while (personalMovieDB.count == '' || personalMovieDB.count == null || isNaN(personalMovieDB.count)) {
+            personalMovieDB.count = +prompt('Сколько фильмов Вы уже посмотрели?', '');
+        }
+    },
+    rememberMyFilms: function() {
+        for (let i = 0; i <= 1; i++) {
+            let a = prompt('Один из последних просмотренных фильмов?', ''),
+                b = prompt('На сколько оцените его?', '');
+            if (a == null || b == null) {
+                alert( 'Вы нажали отмену, повторите ввод!' );
+                i--;
+                continue;
+            } else if
+            (a == "" || b == "" || a.length >= 50 || b.length >= 50) {
+                alert( 'Вы ввели пустую строку или количество символов больше 5, повторите ввод!' );
+                i--;
+            } else {
+                personalMovieDB.movies[a] = b;
+            }
+        }
+    },
     /* пишим функцию с условиями и выводом сообщения пользователю через встроенную функцию alert */
     /* позже по заданию переписали в метод объекта */
-    detectPersonalLevel: function () {
+    detectPersonalLevel: function() {
         if (personalMovieDB.count < 10) {
             alert( 'Просмотрена довольно мало фильмов' );
         } else if (personalMovieDB.count <= 30) {
@@ -34,10 +48,43 @@ const personalMovieDB = {
         } else {
             alert( 'Произошла ошибка' );
         }
+    },
+    showMyDB: function() {
+        if (!personalMovieDB.privat) {
+            console.log(personalMovieDB);
+        }
+    },
+    toggleVisibleMyDB: function() {
+        if (personalMovieDB.privat) {
+            personalMovieDB.privat = false;
+            console.log(personalMovieDB.privat)
+        } else {
+            personalMovieDB.privat = true;
+            console.log(personalMovieDB.privat)
+        }
+    },
+    writeYouGenres: function() {
+        for (let i = 1; i < 4; i++) {
+            let genre = prompt(`Ваш любимый жанр под номером ${i}`, '');
+            if (genre == '' || genre == null) {
+                alert('Вы ввели пустую строку или нажали отмену, повторите ввод');
+                i--;
+            } else {
+                personalMovieDB.genres[i] = genre;
+            }
+        };
+        personalMovieDB.genres.forEach(function (item,index) {
+            console.log(`Любимый жанр #${index+1} - это ${item}`)
+        })
     }
 };
 
-personalMovieDB.detectPersonalLevel(); /* ---вызываем фунцию */
+// personalMovieDB.start(); /* ---вызываем фунцию (метод) start */
+// personalMovieDB.rememberMyFilms();
+// personalMovieDB.detectPersonalLevel(); /* ---вызываем фунцию (метод)*/
+// personalMovieDB.showMyDB();
+// personalMovieDB.toggleVisibleMyDB();
+// personalMovieDB.writeYouGenres();
 
 
 /* для цикла можно создать глобальные переменные или можно объявлять их внутри цикла */
@@ -63,28 +110,6 @@ personalMovieDB.detectPersonalLevel(); /* ---вызываем фунцию */
 //     }
 // };
 
-/* Задание на цикл через for */
-
-function rememberMyFilms() {
-    for (let i = 0; i <= 1; i++) {
-        let a = prompt('Один из последних просмотренных фильмов?', ''),
-            b = prompt('На сколько оцените его?', '');
-        if (a == null || b == null) {
-            alert( 'Вы нажали отмену, повторите ввод!' );
-            i--;
-            continue;
-        } else if
-        (a == "" || b == "" || a.length >= 50 || b.length >= 50) {
-            alert( 'Вы ввели пустую строку или количество символов больше 5, повторите ввод!' );
-            i--;
-        } else {
-            personalMovieDB.movies[a] = b;
-        }
-    }
-}
-
-// rememberMyFilms();
-
 /* выполняем задание в трех функциях и понимаем что в большинсве for имеет более удобный синтаксис */
 
 /* do сначало выполнить одну итерацию (1 повторение) потом проверять на соответвие условию в некоторых случаях полезен */
@@ -106,19 +131,6 @@ function rememberMyFilms() {
 //     }
 // } while (i <= 1);
 
-function showMyDB() {
-    if (!personalMovieDB.privat) {
-        console.log(personalMovieDB);
-    }
-}
-
-showMyDB();
-
-function writeYouGenres() {
-    for (let i = 1; i < 4; i++) {
-        personalMovieDB.genres[i-1] = prompt(`Ваш любимый жанр под номером ${i}`, '');
-    }
-}
 
 
 // пример callback функции
